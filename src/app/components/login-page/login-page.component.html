@@ -1,0 +1,15 @@
+<div>
+    <form [formGroup]="reactiveForm" (ngSubmit)="onLogin()">
+
+        <label>Username:</label>
+        <input type="text" formControlName="name">
+        <p *ngIf="reactiveForm.get('name')?.invalid && reactiveForm.get('name')?.touched">Informe seu username.</p>
+    
+        <label>Password:</label>
+        <input type="password" formControlName="password">
+        <p *ngIf="reactiveForm.get('password')?.invalid && reactiveForm.get('password')?.touched">Informe sua senha.</p>
+    
+        <button type="submit" [disabled]="reactiveForm.invalid">Login</button>
+    
+    </form>
+</div>
