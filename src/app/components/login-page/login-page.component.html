@@ -10,6 +10,7 @@
         <p *ngIf="reactiveForm.get('password')?.invalid && reactiveForm.get('password')?.touched">Informe sua senha.</p>
     
         <button type="submit" [disabled]="reactiveForm.invalid">Login</button>
+        <p *ngIf="loginFailed">Incorrect username or password.</p>
     
     </form>
 </div>

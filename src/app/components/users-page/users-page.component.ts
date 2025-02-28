@@ -24,7 +24,7 @@ export class UsersPageComponent {
   loadUsers() {
     this.apiService.getUsers().subscribe(
       (data) => this.users = data,
-      (error) => console.log("Erro ao carregar posts", error)
+      (error) => console.log("Error loading users", error)
     )
   };
 
