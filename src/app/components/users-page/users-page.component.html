@@ -1,17 +1,30 @@
-<h1>Users List</h1>
-<input type="text" [(ngModel)]="inputUsername">
-<input type="email" [(ngModel)]="inputEmail">
-<input type="password" [(ngModel)]="inputPassword">
-<button *ngIf="btnCreateUpdate == 'CREATE'" (click)="createUser()">Create</button>
-<button *ngIf="btnCreateUpdate != 'CREATE'" (click)="updateUser()">Update</button>
-<button *ngIf="btnCreateUpdate != 'CREATE'" (click)="quitUpdate()">X</button>
-<ul>
-    <li *ngFor="let user of users">
+<div class="container">
+  <div class="crud">
+    <h1>Crud Users</h1>
+    <input type="text" [(ngModel)]="inputUsername" placeholder="Name" />
+    <input type="email" [(ngModel)]="inputEmail" placeholder="Email" />
+    <input type="password" [(ngModel)]="inputPassword" placeholder="Password" />
+    <button *ngIf="btnCreateUpdate == 'CREATE'" (click)="createUser()">
+      Create
+    </button>
+    <button *ngIf="btnCreateUpdate != 'CREATE'" (click)="updateUser()">
+      Update
+    </button>
+    <button *ngIf="btnCreateUpdate != 'CREATE'" (click)="quitUpdate()">
+      X
+    </button>
+  </div>
+  <div class="list">
+    <h1>Users List</h1>
+    <ul>
+      <li *ngFor="let user of users">
         <strong>{{ user.nome }}</strong>
         <p>{{ user.email }}</p>
         <p>{{ user.senha }}</p>
         <p>{{ user.id }}</p>
         <button (click)="updateInputs(user)">Update</button>
         <button (click)="deleteUser(user.id!)">Delete</button>
-    </li>
-</ul>
+      </li>
+    </ul>
+  </div>
+</div>

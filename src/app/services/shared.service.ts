@@ -13,7 +13,7 @@ export class SharedService {
   private users: UserApi[] = [{nome: "admin", email: "admin@gmail.com", senha: "admin"}];
 
   constructor(private apiService: ApiService) {
-    //this.loadUsers();
+    this.loadUsers();
   };
 
 

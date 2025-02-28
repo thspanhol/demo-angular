@@ -22,14 +22,12 @@ export class LoginPageComponent {
   }
 
   onLogin = () => {
-    this.reactiveForm.valid && console.log('Dados enviados: ', this.reactiveForm.value);
+    //this.reactiveForm.valid && console.log('Dados enviados: ', this.reactiveForm.value);
     let formName = this.reactiveForm.get('name')?.value;
     let formPassword = this.reactiveForm.get('password')?.value;
     let listUsers = this.sharedService.getUsers();
 
-    this.sharedService.setLogin(listUsers.some((user) => user.nome == formName && user.senha == formPassword));
-
-    console.log(this.sharedService.getLogin());
+    this.sharedService.setLogin(listUsers.some((user) => user.nome == formName && user.senha == formPassword));    
 
     this.router.navigate(["/users"]);
     this.loginFailed = true;
