@@ -1,10 +1,10 @@
 <div class="container">
   <form [formGroup]="reactiveForm" (ngSubmit)="onLogin()">
     <label>Username:</label>
-    <input type="text" formControlName="name" />
+    <input type="text" formControlName="username" />
     <p
       *ngIf="
-        reactiveForm.get('name')?.invalid && reactiveForm.get('name')?.touched
+        reactiveForm.get('username')?.invalid && reactiveForm.get('username')?.touched
       "
     >
       Informe seu username.

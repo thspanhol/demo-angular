@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SharedService } from '../../services/shared.service';
 import { Router } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { ClassCookieService } from '../../services/cookie.service';
 
 @Component({
   selector: 'app-login-page',
@@ -14,24 +16,34 @@ export class LoginPageComponent {
   loginFailed: boolean = false;
   
 
-  constructor(private sharedService: SharedService, private router: Router) {
+  constructor(private sharedService: SharedService, private router: Router, private apiService: ApiService, private cookieService: ClassCookieService) {
     this.reactiveForm = new FormGroup({
-      name: new FormControl('', Validators.required),
+      username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     })
   }
 
-  onLogin = () => {
-    //this.reactiveForm.valid && console.log('Dados enviados: ', this.reactiveForm.value);
-    let formName = this.reactiveForm.get('name')?.value;
-    let formPassword = this.reactiveForm.get('password')?.value;
-    let listUsers = this.sharedService.getUsers();
+  onLogin = () => this.apiService.loginAuth(this.reactiveForm.value).subscribe({
+    next: (resp) => {
+      //console.log(resp);
+      this.setCookie('userToken', resp.token);
+      this.router.navigate(["/users"]);
+    },
+    error: (error) => this.loginFailed = true
+  });
 
-    this.sharedService.setLogin(listUsers.some((user) => user.nome == formName && user.senha == formPassword));    
+  onVerify = () => this.apiService.verifyAuth().subscribe(resp => console.log(resp));
 
-    this.router.navigate(["/users"]);
-    this.loginFailed = true;
+  setCookie(name: string, value: string) {
+    this.cookieService.setCookie(name, value, 1);
+  }
+
+  getCookie (name: string) {
+    this.cookieService.getCookie(name);
+  }
+
+  deleteCookie (name: string) {
+    this.cookieService.deleteCookie(name);
   }
   
-
 }

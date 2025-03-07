@@ -1,6 +1,8 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { UserApi } from '../../models/user.model';
+import { UserApi, UserRegister, VerifyResponse } from '../../models/user.model';
+import { Router } from '@angular/router';
+import { ClassCookieService } from '../../services/cookie.service';
 
 @Component({
   selector: 'app-users-page',
@@ -9,81 +11,70 @@ import { UserApi } from '../../models/user.model';
 })
 export class UsersPageComponent {
 
-  users: UserApi[] = [];
+  users: VerifyResponse[] = [];
   btnCreateUpdate: string = 'CREATE';
   inputUsername: string = '';
-  inputEmail: string = '';
   inputPassword: string = '';
+  inputRole: string = 'ADMIN';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private cookieService: ClassCookieService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadUsers();    
+    this.loadUsers();
   };
 
+  onVerify = () => this.apiService.verifyAuth().subscribe(resp => console.log(resp));
+
   loadUsers() {
-    this.apiService.getUsers().subscribe(
+    this.apiService.verifyAuth().subscribe(
       (data) => this.users = data,
       (error) => console.log("Error loading users", error)
     )
   };
 
-  newUser: UserApi = {
-    nome: "Teste User",
-    email: "teste@gmail.com",
-    senha: "SenhaTeste"
-  };
-
-  editUser: UserApi = {
-    nome: "Update User",
-    email: "update@gmail.com",
-    senha: "UpdateTeste"
-  };
-
   createUser() {
 
-    let newUser = {
-      nome: this.inputUsername,
-      email: this.inputEmail,
-      senha: this.inputPassword
+    const newUser: UserRegister = {
+      username: this.inputUsername,
+      password: this.inputPassword,
+      role: this.inputRole
     };
 
     this.inputUsername = '';
-    this.inputEmail = '';
     this.inputPassword = '';
+    //this.inputRole = 'ADMIN';
 
-    this.apiService.createUser(newUser).subscribe(() => this.loadUsers());
+    this.apiService.registerAuth(newUser).subscribe(() => this.loadUsers());
   }
 
-  updateInputs(user: UserApi) {
+  updateInputs(user: VerifyResponse) {
 
-    this.inputUsername = user.nome;
-    this.inputEmail = user.email;
-    this.inputPassword = user.senha;
-    this.btnCreateUpdate = user.id!;
-
+    this.inputUsername = user.username;
+    this.inputPassword = '';
+    //this.inputRole = 'ADMIN';
+    this.btnCreateUpdate = user.userId;
   }
 
   updateUser() {
 
-    let updateUser = {
-      nome: this.inputUsername,
-      email: this.inputEmail,
-      senha: this.inputPassword
+    const updateUser = {
+      username: this.inputUsername,
+      password: this.inputPassword,
+      role: this.inputRole
     };
 
     this.inputUsername = '';
-    this.inputEmail = '';
     this.inputPassword = '';
+    //this.inputRole = 'ADMIN';
 
-    this.apiService.updateUser(this.btnCreateUpdate, updateUser).subscribe(() => {
+    this.apiService.updateAuth(this.btnCreateUpdate, updateUser).subscribe(() => {
       this.btnCreateUpdate = "CREATE"
       this.loadUsers();
     });
   }
 
   deleteUser(id: string) {
-    this.apiService.deleteUser(id).subscribe(() => {
+    this.apiService.deleteAuth(id).subscribe(() => {
       this.loadUsers();
     });
   }
@@ -91,10 +82,9 @@ export class UsersPageComponent {
   quitUpdate = () => {
 
     this.inputUsername = '';
-    this.inputEmail = '';
     this.inputPassword = '';
+    //this.inputRole = 'ADMIN';
     this.btnCreateUpdate = "CREATE"
-
   }
 
 }
