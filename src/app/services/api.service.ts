@@ -37,19 +37,19 @@ export class ApiService {
   }
 
   verifyAuth(): Observable<VerifyResponse[]> {
-    return this.http.get<any>(this.apiAuth + 'verify');
+    return this.http.get<VerifyResponse[]>(this.apiAuth + 'verify');
   }
 
   registerAuth(user: UserRegister): Observable<VerifyResponse> {
-    return this.http.post<any>(this.apiAuth + 'register', user);
+    return this.http.post<VerifyResponse>(this.apiAuth + 'register', user);
   }
 
   deleteAuth(id: string): Observable<void> {
-    return this.http.delete<any>(this.apiAuth + id)
+    return this.http.delete<void>(this.apiAuth + id)
   }
 
   updateAuth(id: string, user: UserRegister): Observable<VerifyResponse> {
-    return this.http.put<any>(this.apiAuth + id, user)
+    return this.http.put<VerifyResponse>(this.apiAuth + id, user)
   }
 
   ///////
