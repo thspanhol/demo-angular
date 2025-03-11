@@ -52,25 +52,25 @@ export class ApiService {
     return this.http.put<VerifyResponse>(this.apiAuth + id, user)
   }
 
-  ///////
+  // ///////
 
-  // GET
-  getUsers(): Observable<UserApi[]> {
-    return this.http.get<any>(this.apiURL);
-  }
+  // // GET
+  // getUsers(): Observable<UserApi[]> {
+  //   return this.http.get<any>(this.apiURL);
+  // }
 
-  // POST
-  createUser(user: any): Observable<void> {
-    return this.http.post<any>(this.apiURL, user);
-  }
+  // // POST
+  // createUser(user: any): Observable<void> {
+  //   return this.http.post<any>(this.apiURL, user);
+  // }
 
-  // PUT
-  updateUser(id: string, user: any): Observable<void> {
-    return this.http.put<any>(`${this.apiURL}/${id}`, user);
-  }
+  // // PUT
+  // updateUser(id: string, user: any): Observable<void> {
+  //   return this.http.put<any>(`${this.apiURL}/${id}`, user);
+  // }
 
-  // DELETE
-  deleteUser(id: string): Observable<void> {
-    return this.http.delete<any>(`${this.apiURL}/${id}`);
-  }
+  // // DELETE
+  // deleteUser(id: string): Observable<void> {
+  //   return this.http.delete<any>(`${this.apiURL}/${id}`);
+  // }
 }
