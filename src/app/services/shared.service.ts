@@ -12,9 +12,9 @@ export class SharedService {
   private login: boolean = false;
   private users: UserApi[] = [{nome: "admin", email: "admin@gmail.com", senha: "admin"}];
 
-  constructor(private apiService: ApiService) {
-    this.loadUsers();
-  };
+  // constructor(private apiService: ApiService) {
+  //   this.loadUsers();
+  // };
 
 
   getMensagem(): string {
@@ -33,12 +33,12 @@ export class SharedService {
     this.login = param;
   }
 
-  loadUsers() {
-    this.apiService.getUsers().subscribe(
-      (data) => this.users = data,
-      (error) => console.log("Error loading users", error)
-    )
-  };
+  // loadUsers() {
+  //   this.apiService.getUsers().subscribe(
+  //     (data) => this.users = data,
+  //     (error) => console.log("Error loading users", error)
+  //   )
+  // };
 
   getUsers(): UserApi[] {
     return this.users;
