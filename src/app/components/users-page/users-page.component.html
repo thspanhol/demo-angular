@@ -1,29 +1,39 @@
 <div class="container">
   <div class="crud">
     <h1>Crud Users</h1>
-    <input type="text" [(ngModel)]="inputUsername" placeholder="Username" />
-    <input type="password" [(ngModel)]="inputPassword" placeholder="Password" />
-    <input type="text" [(ngModel)]="inputRole" placeholder="Role" />
-    <button *ngIf="btnCreateUpdate == 'CREATE'" (click)="createUser()">
-      Create
-    </button>
-    <button *ngIf="btnCreateUpdate != 'CREATE'" (click)="updateUser()">
-      Update
-    </button>
-    <button *ngIf="btnCreateUpdate != 'CREATE'" (click)="quitUpdate()">
-      X
-    </button>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="crud">
+
+      <label>Username:</label>
+      <input type="text" formControlName="username" />
+  
+      <label>Password:</label>
+      <input type="password" formControlName="password" />
+
+      <label>Role:</label>
+      <input type="text" formControlName="role" />
+  
+      <button type="submit" [disabled]="form.invalid">{{ btnCreateUpdate }}</button>
+      <button (click)="quitUpdate()" *ngIf="updateUserId">X</button>
+
+    </form>
+
   </div>
+
   <div class="list">
     <h1>Users List</h1>
-    <ul>
-      <li *ngFor="let user of users">
-        <strong>{{ user.username }}</strong>
-        <p>{{ user.role }}</p>
-        <p>{{ user.userId }}</p>
-        <button (click)="updateInputs(user)">Update</button>
-        <button (click)="deleteUser(user.userId)">Delete</button>
-      </li>
-    </ul>
+    <form [formGroup]="userListForm">
+
+      <ul>
+          <li *ngFor="let user of userList.controls">
+          <strong>{{ user.get('username')?.value }}</strong>
+          <p>{{ user.get('role')?.value }}</p>
+          <p>{{ user.get('userId')?.value }}</p>
+          <button (click)="updateInputs(user.value)">Update</button>
+          <button (click)="deleteUser(user.value.userId)">Delete</button>
+        </li>
+      </ul>
+
+    </form>
   </div>
+  
 </div>

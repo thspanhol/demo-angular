@@ -10,20 +10,19 @@ export interface UserApi {
     password: string;
   }
 
-  export interface UserRegister {
+  interface BaseUser {
     username: string;
-    password: string;
     role: string;
   }
 
-  export interface LoginResponse {
-    username: string;
-    role: string;
+  export interface LoginResponse extends BaseUser{
     token: string;
   }
 
-  export interface VerifyResponse {
+  export interface UserRegister extends BaseUser {
+    password: string;
+  }
+
+  export interface VerifyResponse extends BaseUser {
     userId: string;
-    username: string;
-    role: string;
   }

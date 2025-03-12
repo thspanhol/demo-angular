@@ -1,49 +1,45 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SharedService } from '../../services/shared.service';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { ClassCookieService } from '../../services/cookie.service';
+import { CookieService } from 'ngx-cookie-service';
+import { BaseFormComponent } from '../base-form/base-form.component';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })
-export class LoginPageComponent {
+export class LoginPageComponent extends BaseFormComponent {
 
-  reactiveForm: FormGroup;
-  loginFailed: boolean = false;
-  
+  loginFailed = false;
 
-  constructor(private sharedService: SharedService, private router: Router, private apiService: ApiService, private cookieService: ClassCookieService) {
-    this.reactiveForm = new FormGroup({
+  constructor(private router: Router, private apiService: ApiService, private cookieService: CookieService) {
+    super();
+    this.createForm();
+  }
+
+  createForm(): void {
+    this.form = new FormGroup({
       username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
-    })
+      password: new FormControl('', Validators.required),
+      loginFailed: new FormControl(false)
+    });
   }
 
-  onLogin = () => this.apiService.loginAuth(this.reactiveForm.value).subscribe({
-    next: (resp) => {
-      //console.log(resp);
-      this.setCookie('userToken', resp.token);
-      this.router.navigate(["/users"]);
-    },
-    error: (error) => this.loginFailed = true
-  });
+  onSubmit(): void {
 
-  onVerify = () => this.apiService.verifyAuth().subscribe(resp => console.log(resp));
-
-  setCookie(name: string, value: string) {
-    this.cookieService.setCookie(name, value, 1);
-  }
-
-  getCookie (name: string) {
-    this.cookieService.getCookie(name);
-  }
-
-  deleteCookie (name: string) {
-    this.cookieService.deleteCookie(name);
-  }
+    this.apiService.loginAuth(this.form.value).subscribe({
+      next: (resp) => {
   
+        const expirationDate = new Date();
+        expirationDate.setMinutes(expirationDate.getMinutes() + 10);
+  
+        this.cookieService.set('userToken', resp.token, expirationDate);
+        this.router.navigate(["/users"]);
+      },
+      error: (error) => this.loginFailed = true
+    });
+  }
+
 }

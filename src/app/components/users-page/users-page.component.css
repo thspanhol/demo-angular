@@ -21,7 +21,7 @@
     
 }
 .crud input {
-    width: 50%;
+    width: 80%;
 }
 .list {
     width: 50%;
@@ -58,6 +58,12 @@ button {
 button:hover {
     background: #0056b3;
 }
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
 
 button:nth-child(3) {
     background: #dc3545;

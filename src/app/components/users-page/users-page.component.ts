@@ -1,90 +1,126 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { UserApi, UserRegister, VerifyResponse } from '../../models/user.model';
+import { VerifyResponse } from '../../models/user.model';
 import { Router } from '@angular/router';
 import { ClassCookieService } from '../../services/cookie.service';
+import { BaseFormComponent } from '../base-form/base-form.component';
+import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-users-page',
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.css'
 })
-export class UsersPageComponent {
+export class UsersPageComponent extends BaseFormComponent {
 
-  users: VerifyResponse[] = [];
   btnCreateUpdate: string = 'CREATE';
-  inputUsername: string = '';
-  inputPassword: string = '';
-  inputRole: string = 'ADMIN';
+  updateUserId: string = ''
+  userListForm: FormGroup;
 
-  constructor(private apiService: ApiService, private cookieService: ClassCookieService, private router: Router) {}
+  constructor(private apiService: ApiService, private cookieService: ClassCookieService, private router: Router) {
+    super();
+    this.createForm();
+
+    this.userListForm = new FormGroup({
+      userList: new FormArray([])
+    });
+  }
+
+  createForm(): void {
+    this.form = new FormGroup({
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+      role: new FormControl('ADMIN', Validators.required),
+    });
+  }
+
+  onSubmit(): any {
+    if (this.btnCreateUpdate == 'CREATE') {  
+      return this.apiService.registerAuth(this.form.value).subscribe(() => {
+        this.quitUpdate();
+        this.loadUsers();
+      });
+    }
+
+    return this.apiService.updateAuth(this.updateUserId, this.form.value).subscribe(() => {      
+      this.removeUserForm(this.updateUserId);
+      this.quitUpdate();
+      this.loadUsers();
+    });
+    
+  }
 
   ngOnInit(): void {
     this.loadUsers();
   };
 
-  onVerify = () => this.apiService.verifyAuth().subscribe(resp => console.log(resp));
-
   loadUsers() {
     this.apiService.verifyAuth().subscribe(
-      (data) => this.users = data,
+      (data) => data.map(user => !this.userExists(user.userId) && this.addUser(user)),
       (error) => console.log("Error loading users", error)
     )
   };
 
-  createUser() {
-
-    const newUser: UserRegister = {
-      username: this.inputUsername,
-      password: this.inputPassword,
-      role: this.inputRole
-    };
-
-    this.inputUsername = '';
-    this.inputPassword = '';
-    //this.inputRole = 'ADMIN';
-
-    this.apiService.registerAuth(newUser).subscribe(() => this.loadUsers());
-  }
-
   updateInputs(user: VerifyResponse) {
-
-    this.inputUsername = user.username;
-    this.inputPassword = '';
-    //this.inputRole = 'ADMIN';
-    this.btnCreateUpdate = user.userId;
-  }
-
-  updateUser() {
-
-    const updateUser = {
-      username: this.inputUsername,
-      password: this.inputPassword,
-      role: this.inputRole
-    };
-
-    this.inputUsername = '';
-    this.inputPassword = '';
-    //this.inputRole = 'ADMIN';
-
-    this.apiService.updateAuth(this.btnCreateUpdate, updateUser).subscribe(() => {
-      this.btnCreateUpdate = "CREATE"
-      this.loadUsers();
-    });
+  
+    this.form.setValue({
+      username: user.username,
+      password: '',
+      role: 'ADMIN'
+    })
+    this.updateUserId = user.userId
+    this.btnCreateUpdate = 'UPDATE';
   }
 
   deleteUser(id: string) {
+        
     this.apiService.deleteAuth(id).subscribe(() => {
+      this.removeUserForm(id)
       this.loadUsers();
     });
   }
 
   quitUpdate = () => {
 
-    this.inputUsername = '';
-    this.inputPassword = '';
-    //this.inputRole = 'ADMIN';
-    this.btnCreateUpdate = "CREATE"
+    this.form.setValue({
+      username: '',
+      password: '',
+      role: 'ADMIN'
+    });
+    this.btnCreateUpdate = "CREATE";
+    this.updateUserId = '';
+  }
+
+  // ----- FormArray -----
+
+  get userList() {
+    return this.userListForm.get('userList') as FormArray;
+  }
+
+  addUser(user: VerifyResponse) {
+    const userGroup = new FormGroup({
+      userId: new FormControl(user.userId),
+      username: new FormControl(user.username),
+      role: new FormControl(user.role)
+    });
+
+    this.userList.push(userGroup);
+  }
+
+  userExists(userId: string): boolean {
+    return this.userList.controls.some(userGroup => {
+      return userGroup.get('userId')?.value === userId;
+    });
+  }
+
+  removeUserForm(id: string) {
+    const index = this.userList.controls.findIndex(userGroup => {
+      return userGroup.get('userId')?.value === id;
+    });
+
+    if (index !== -1) {
+      this.userList.removeAt(index);
+    }
   }
 
 }

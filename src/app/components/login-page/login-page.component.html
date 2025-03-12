@@ -1,10 +1,10 @@
 <div class="container">
-  <form [formGroup]="reactiveForm" (ngSubmit)="onLogin()">
+  <form [formGroup]="form" (ngSubmit)="submit()">
     <label>Username:</label>
     <input type="text" formControlName="username" />
     <p
       *ngIf="
-        reactiveForm.get('username')?.invalid && reactiveForm.get('username')?.touched
+        form.get('username')?.invalid && form.get('username')?.touched
       "
     >
       Informe seu username.
@@ -14,14 +14,14 @@
     <input type="password" formControlName="password" />
     <p
       *ngIf="
-        reactiveForm.get('password')?.invalid &&
-        reactiveForm.get('password')?.touched
+        form.get('password')?.invalid &&
+        form.get('password')?.touched
       "
     >
       Informe sua senha.
     </p>
 
-    <button type="submit" [disabled]="reactiveForm.invalid">Login</button>
+    <button type="submit" [disabled]="form.invalid">Login</button>
     <p *ngIf="loginFailed">Incorrect username or password.</p>
   </form>
 </div>
