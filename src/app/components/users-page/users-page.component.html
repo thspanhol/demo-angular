@@ -1,8 +1,12 @@
 <div class="container">
+
   <div class="crud">
-  
-    <app-header content="Crud Users" (logHeader)="receiveLog($event)"/>
-    <form [formGroup]="form" (ngSubmit)="submit()" class="crud">
+
+    <div (click)="isVisibleCrud = !isVisibleCrud">
+      <app-header content="Crud Users" (logHeader)="receiveLog($event)"/>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="crud" *appShow="isVisibleCrud">
 
       <label>Username:</label>
       <input type="text" formControlName="username" />
@@ -21,8 +25,12 @@
   </div>
 
   <div class="list">
+
+    <div (click)="isVisibleList = !isVisibleList">
     <app-header content="Users List" (logHeader)="receiveLog($event)"/>
-    <form [formGroup]="userListForm">
+    </div>
+
+    <form [formGroup]="userListForm" *appShow="isVisibleList">
 
       <ul>
           <li *ngFor="let user of userList.controls">

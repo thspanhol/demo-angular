@@ -10,13 +10,15 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './interceptor/auth.interceptor';
 import { CookieService } from 'ngx-cookie-service';
 import { HeaderComponent } from './components/header/header.component';
+import { AppShowDirective } from './services/app-show.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
     UsersPageComponent,
-    HeaderComponent
+    HeaderComponent,
+    AppShowDirective
     ],
   imports: [
     BrowserModule,

@@ -12,7 +12,7 @@ export class HeaderComponent {
   @Output() logHeader: EventEmitter<string> = new EventEmitter();
 
   sendtLog() {
-    this.logHeader.emit(this.content)
+    this.logHeader.emit(this.content);
   }
 
 }

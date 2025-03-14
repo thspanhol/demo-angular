@@ -16,6 +16,8 @@ export class UsersPageComponent extends BaseFormComponent {
   btnCreateUpdate: string = 'CREATE';
   updateUserId: string = ''
   userListForm: FormGroup;
+  isVisibleCrud: boolean = true;
+  isVisibleList: boolean = true;
 
   constructor(private apiService: ApiService, private cookieService: ClassCookieService, private router: Router) {
     super();
@@ -125,7 +127,6 @@ export class UsersPageComponent extends BaseFormComponent {
 
   receiveLog(event: string) {
     console.log(event);
-    
   }
 
 }
