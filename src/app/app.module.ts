@@ -11,6 +11,7 @@ import { authInterceptor } from './interceptor/auth.interceptor';
 import { CookieService } from 'ngx-cookie-service';
 import { HeaderComponent } from './components/header/header.component';
 import { AppShowDirective } from './services/app-show.directive';
+import { FormatPipe } from './services/format.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AppShowDirective } from './services/app-show.directive';
     LoginPageComponent,
     UsersPageComponent,
     HeaderComponent,
-    AppShowDirective
+    AppShowDirective,
+    FormatPipe
     ],
   imports: [
     BrowserModule,

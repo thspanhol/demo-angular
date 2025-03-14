@@ -129,4 +129,20 @@ export class UsersPageComponent extends BaseFormComponent {
     console.log(event);
   }
 
+  toggleVisibility() {
+    this.isVisibleList = !this.isVisibleList;
+  }
+
+  onFocus(string: string) {
+    console.log("O usuário acessou o input " + string);
+  }
+
+  onBlur(string: string) {
+    console.log("O usuário saiu do input " + string);
+  }
+
+  onChange(string: string) {
+    console.log("O usuário alterou o input " + string);
+  }
+
 }

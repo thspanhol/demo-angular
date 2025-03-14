@@ -1,1 +1,1 @@
-<h1 (click)="sendtLog()">{{ content }}</h1>
+<h1 (click)="sendtLog()">{{ (content[0] | uppercase) + (content.slice(1)| lowercase) }}</h1>

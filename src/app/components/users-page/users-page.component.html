@@ -2,15 +2,15 @@
 
   <div class="crud">
 
-    <div (click)="isVisibleCrud = !isVisibleCrud">
-      <app-header content="Crud Users" (logHeader)="receiveLog($event)"/>
+    <div (dblclick)="isVisibleCrud = !isVisibleCrud">
+      <app-header content="crud users" (logHeader)="receiveLog($event)"/>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="submit()" class="crud" *appShow="isVisibleCrud">
 
       <label>Username:</label>
-      <input type="text" formControlName="username" />
-  
+      <input type="text" formControlName="username" (focus)="onFocus('username')" (blur)="onBlur('username')" (change)="onChange('username')"/>
+
       <label>Password:</label>
       <input type="password" formControlName="password" />
 
@@ -26,8 +26,8 @@
 
   <div class="list">
 
-    <div (click)="isVisibleList = !isVisibleList">
-    <app-header content="Users List" (logHeader)="receiveLog($event)"/>
+    <div (dblclick)="isVisibleList = !isVisibleList">
+    <app-header content="users list" (logHeader)="receiveLog($event)"/>
     </div>
 
     <form [formGroup]="userListForm" *appShow="isVisibleList">
@@ -35,7 +35,7 @@
       <ul>
           <li *ngFor="let user of userList.controls">
           <strong>{{ user.get('username')?.value }}</strong>
-          <p>{{ user.get('role')?.value }}</p>
+          <p>{{ user.get('role')?.value | format }}</p>
           <p>{{ user.get('userId')?.value }}</p>
           <button (click)="updateInputs(user.value)">Update</button>
           <button (click)="deleteUser(user.value.userId)">Delete</button>
