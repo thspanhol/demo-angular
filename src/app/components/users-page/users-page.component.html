@@ -1,6 +1,7 @@
 <div class="container">
   <div class="crud">
-    <h1>Crud Users</h1>
+  
+    <app-header content="Crud Users" (logHeader)="receiveLog($event)"/>
     <form [formGroup]="form" (ngSubmit)="submit()" class="crud">
 
       <label>Username:</label>
@@ -20,7 +21,7 @@
   </div>
 
   <div class="list">
-    <h1>Users List</h1>
+    <app-header content="Users List" (logHeader)="receiveLog($event)"/>
     <form [formGroup]="userListForm">
 
       <ul>

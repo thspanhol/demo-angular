@@ -9,13 +9,15 @@ import { UsersPageComponent } from './components/users-page/users-page.component
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptor/auth.interceptor';
 import { CookieService } from 'ngx-cookie-service';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
-    UsersPageComponent
-  ],
+    UsersPageComponent,
+    HeaderComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -123,4 +123,9 @@ export class UsersPageComponent extends BaseFormComponent {
     }
   }
 
+  receiveLog(event: string) {
+    console.log(event);
+    
+  }
+
 }
