@@ -11,8 +11,15 @@ export class HeaderComponent {
 
   @Output() logHeader: EventEmitter<string> = new EventEmitter();
 
+  @Output() isVisible: EventEmitter<boolean> = new EventEmitter();
+
+  visibleCondition: boolean = true
+
+
   sendtLog() {
     this.logHeader.emit(this.content);
+    this.visibleCondition = !this.visibleCondition;
+    this.isVisible.emit(this.visibleCondition);
   }
 
 }

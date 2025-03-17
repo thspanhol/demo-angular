@@ -129,6 +129,14 @@ export class UsersPageComponent extends BaseFormComponent {
     console.log(event);
   }
 
+  receiveVisibilityList(event: boolean) {
+    this.isVisibleList = event;
+  }
+
+  receiveVisibilityCrud(event: boolean) {
+    this.isVisibleCrud = event;
+  }
+
   toggleVisibility() {
     this.isVisibleList = !this.isVisibleList;
   }

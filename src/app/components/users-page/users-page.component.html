@@ -2,9 +2,7 @@
 
   <div class="crud">
 
-    <div (dblclick)="isVisibleCrud = !isVisibleCrud">
-      <app-header content="crud users" (logHeader)="receiveLog($event)"/>
-    </div>
+    <app-header content="crud users" (logHeader)="receiveLog($event)" (isVisible)="receiveVisibilityCrud($event)"/>
 
     <form [formGroup]="form" (ngSubmit)="submit()" class="crud" *appShow="isVisibleCrud">
 
@@ -26,9 +24,7 @@
 
   <div class="list">
 
-    <div (dblclick)="isVisibleList = !isVisibleList">
-    <app-header content="users list" (logHeader)="receiveLog($event)"/>
-    </div>
+    <app-header content="users list" (logHeader)="receiveLog($event)" (isVisible)="receiveVisibilityList($event)"/>
 
     <form [formGroup]="userListForm" *appShow="isVisibleList">
 
