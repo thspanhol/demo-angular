@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -13,13 +14,37 @@ export class HeaderComponent {
 
   @Output() isVisible: EventEmitter<boolean> = new EventEmitter();
 
-  visibleCondition: boolean = true
+  visibleCondition: boolean = true;
+
+  private subscription!: Subscription;
 
 
   sendtLog() {
     this.logHeader.emit(this.content);
+
     this.visibleCondition = !this.visibleCondition;
     this.isVisible.emit(this.visibleCondition);
   }
+
+  ngOnInit(): void {    
+    this.subscription = this.meuObservable.subscribe(this.meuObserver);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    console.log('Cancela assinatura dos headers');
+  }
+
+    meuObservable = new Observable(observer => {
+      observer.next('log um');
+      observer.next('log dois');
+      observer.complete();
+    });
+  
+    meuObserver = {
+      next: (valor: any) => console.log('Recebido:', valor),
+      error: (erro: any) => console.error('Erro:', erro),
+      complete: () => console.log('Finalizado')
+    };
 
 }

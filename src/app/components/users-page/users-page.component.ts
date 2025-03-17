@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { VerifyResponse } from '../../models/user.model';
 import { Router } from '@angular/router';
-import { ClassCookieService } from '../../services/cookie.service';
 import { BaseFormComponent } from '../base-form/base-form.component';
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-users-page',
@@ -19,13 +19,26 @@ export class UsersPageComponent extends BaseFormComponent {
   isVisibleCrud: boolean = true;
   isVisibleList: boolean = true;
 
-  constructor(private apiService: ApiService, private cookieService: ClassCookieService, private router: Router) {
+  private unsubscribe$ = new Subject<void>();
+  
+
+  constructor(private apiService: ApiService, private router: Router) {
     super();
     this.createForm();
 
     this.userListForm = new FormGroup({
       userList: new FormArray([])
     });
+  }
+
+  ngOnInit(): void {
+    this.loadUsers();
+  };
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    console.log('Cancela a assinatura ao destruir o usersPage');
   }
 
   createForm(): void {
@@ -38,29 +51,31 @@ export class UsersPageComponent extends BaseFormComponent {
 
   onSubmit(): any {
     if (this.btnCreateUpdate == 'CREATE') {  
-      return this.apiService.registerAuth(this.form.value).subscribe(() => {
+      return this.apiService.registerAuth(this.form.value)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(() => {
         this.quitUpdate();
         this.loadUsers();
       });
     }
 
-    return this.apiService.updateAuth(this.updateUserId, this.form.value).subscribe(() => {      
-      this.removeUserForm(this.updateUserId);
-      this.quitUpdate();
-      this.loadUsers();
-    });
-    
+    return this.apiService.updateAuth(this.updateUserId, this.form.value)
+      .pipe(takeUntil(this.unsubscribe$))  
+      .subscribe(() => {      
+        this.removeUserForm(this.updateUserId);
+        this.quitUpdate();
+        this.loadUsers();
+      });
   }
 
-  ngOnInit(): void {
-    this.loadUsers();
-  };
-
   loadUsers() {
-    this.apiService.verifyAuth().subscribe(
-      (data) => data.map(user => !this.userExists(user.userId) && this.addUser(user)),
-      (error) => console.log("Error loading users", error)
-    )
+    this.apiService.verifyAuth()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe({
+      next: (data) => data.map(user => !this.userExists(user.userId) && this.addUser(user)),
+      error: (error) => console.log("Error loading users", error),
+      complete: () => console.log('Carregamento de usuários finalizado.')
+  })
   };
 
   updateInputs(user: VerifyResponse) {
@@ -76,7 +91,9 @@ export class UsersPageComponent extends BaseFormComponent {
 
   deleteUser(id: string) {
         
-    this.apiService.deleteAuth(id).subscribe(() => {
+    this.apiService.deleteAuth(id)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => {
       this.removeUserForm(id)
       this.loadUsers();
     });

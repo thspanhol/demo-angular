@@ -1,15 +1,16 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { LoginResponse, UserApi, UserAuth, UserRegister, VerifyResponse } from '../models/user.model';
+import { LoginResponse, UserAuth, UserRegister, VerifyResponse } from '../models/user.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  private apiURL = "https://crud-node-a7h4.onrender.com/usuarios"
-  private apiAuth= "/api/v1/auth/"
+  //private apiURL = "https://crud-node-a7h4.onrender.com/usuarios"
+  private apiAuth = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
