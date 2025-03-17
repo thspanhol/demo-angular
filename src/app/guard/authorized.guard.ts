@@ -1,8 +1,7 @@
 import { CanActivate, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { SharedService } from '../services/shared.service';
-import { ClassCookieService } from '../services/cookie.service';
-
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +9,11 @@ import { ClassCookieService } from '../services/cookie.service';
 
 export class AuthorizedGuard implements CanActivate {
 
-  constructor(private sharedService: SharedService, private router: Router, private cookieService: ClassCookieService){}
+  constructor(private sharedService: SharedService, private router: Router, private cookieService: CookieService){}
 
   canActivate(): boolean {
-    if (!!this.cookieService.getCookie('userToken')){
-      return !!this.cookieService.getCookie('userToken')
+    if (!!this.cookieService.get('userToken')){
+      return !!this.cookieService.get('userToken')
     } else {
       this.router.navigate(["/login"]);
       return false

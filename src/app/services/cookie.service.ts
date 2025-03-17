@@ -15,13 +15,11 @@ export class ClassCookieService {
   }
 
   getCookie = (name: string): string => {
-    //console.log(this.cookieService.get(name));
     return this.cookieService.get(name);
   }
 
   deleteCookie = (name: string): void => {    
     this.cookieService.delete(name);
-    //console.log(this.cookieService.get(name));
   }
 
   deleteAllCookies = (): void => {
