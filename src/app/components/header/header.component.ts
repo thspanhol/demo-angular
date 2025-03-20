@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -14,10 +14,11 @@ export class HeaderComponent {
 
   @Output() isVisible: EventEmitter<boolean> = new EventEmitter();
 
+  bananavar$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   visibleCondition: boolean = true;
 
   private subscription!: Subscription;
-
 
   sendtLog() {
     this.logHeader.emit(this.content);
@@ -47,4 +48,5 @@ export class HeaderComponent {
       complete: () => console.log('Finalizado')
     };
 
+    bananaVarBollean = () => this.bananavar$.next(true);
 }

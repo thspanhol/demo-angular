@@ -32,6 +32,7 @@
           <li *ngFor="let user of userList.controls">
           <strong>{{ user.get('username')?.value }}</strong>
           <p>{{ user.get('role')?.value | format }}</p>
+          <p>{{ dateTest | date:'dd/MM/yy' }}</p>
           <p>{{ user.get('userId')?.value }}</p>
           <button (click)="updateInputs(user.value)">Update</button>
           <button (click)="deleteUser(user.value.userId)">Delete</button>

@@ -1,1 +1,3 @@
-<h1 (click)="sendtLog()">{{ (content[0] | uppercase) + (content.slice(1)| lowercase) }}</h1>
+<h1 (dblclick)="bananaVarBollean()" (click)="sendtLog()">{{ (content[0] | uppercase) + (content.slice(1)| lowercase) }}</h1>
+<ng-container *ngIf="bananavar$ | async; else uva">🍌</ng-container>
+<ng-template #uva>🍇</ng-template>

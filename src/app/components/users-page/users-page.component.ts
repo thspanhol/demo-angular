@@ -4,7 +4,7 @@ import { VerifyResponse } from '../../models/user.model';
 import { Router } from '@angular/router';
 import { BaseFormComponent } from '../base-form/base-form.component';
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-users-page',
@@ -12,6 +12,8 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './users-page.component.css'
 })
 export class UsersPageComponent extends BaseFormComponent {
+
+  dateTest = new Date();
 
   btnCreateUpdate: string = 'CREATE';
   updateUserId: string = ''
@@ -33,6 +35,11 @@ export class UsersPageComponent extends BaseFormComponent {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.form.controls['username'].valueChanges.pipe(
+      filter(value => value.length > 5)
+    ).subscribe(value => {
+      console.log(value); 
+    })
   };
 
   ngOnDestroy(): void {
@@ -141,6 +148,11 @@ export class UsersPageComponent extends BaseFormComponent {
       this.userList.removeAt(index);
     }
   }
+
+  // removeUserForm(index: number) {
+  //   const usereIdRemove = this.userList.at(index).get('userId')?.value;
+  //   this.userList.removeAt(index);
+  // }
 
   receiveLog(event: string) {
     console.log(event);

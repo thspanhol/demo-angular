@@ -19,15 +19,15 @@ export class LoginPageComponent extends BaseFormComponent {
     this.createForm();
   }
 
-  createForm(): void {
+  override createForm(): void {
     this.form = new FormGroup({
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
       loginFailed: new FormControl(false)
     });
   }
-
-  onSubmit(): void {
+  
+  override onSubmit(): void {
 
     this.apiService.loginAuth(this.form.value).subscribe({
       next: (resp) => {
