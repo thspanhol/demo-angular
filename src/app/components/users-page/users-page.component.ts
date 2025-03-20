@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BaseFormComponent } from '../base-form/base-form.component';
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { filter, Subject, takeUntil } from 'rxjs';
+import { cores } from '../../services/enumExemple.enum';
 
 @Component({
   selector: 'app-users-page',
@@ -46,6 +47,19 @@ export class UsersPageComponent extends BaseFormComponent {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
     console.log('Cancela a assinatura ao destruir o usersPage');
+
+    // Enum
+    console.log(cores.verde);
+    console.log(cores['branco']);
+
+    // Spread
+    let numeros = [1,2,3];
+    let maisNumeros = [...numeros, 4,5,6];
+    console.log(maisNumeros);
+
+    // Destructuring
+    let [primeiro, segundo] = numeros;
+    console.log(primeiro + ' - ' + segundo);
   }
 
   createForm(): void {
