@@ -1,0 +1,11 @@
+<div class="base">
+
+    <button (click)="toggle()">Alternar Visibilidade</button>
+
+    <div [@fadeInOut]="isVisible ? 'show' : 'hide'" class="box">Elemento Animado</div>
+    
+    <!-- <div @bounce class="box">Elemento Animado</div> -->
+    
+    <!-- <div class="bounce box">Elemento Animado</div> -->
+
+</div>

@@ -12,6 +12,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { HeaderComponent } from './components/header/header.component';
 import { AppShowDirective } from './services/app-show.directive';
 import { FormatPipe } from './services/format.pipe';
+import { AnimationComponent } from './components/animation/animation.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -20,13 +22,15 @@ import { FormatPipe } from './services/format.pipe';
     UsersPageComponent,
     HeaderComponent,
     AppShowDirective,
-    FormatPipe
+    FormatPipe,
+    AnimationComponent
     ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     provideClientHydration(),
