@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-animation',
@@ -26,10 +27,16 @@ import { trigger, state, style, transition, animate, keyframes } from '@angular/
 })
 export class AnimationComponent {
 
-  isVisible = true;
+  constructor(private route: ActivatedRoute) {}
+
+  isVisible = false;
 
   toggle() {
     this.isVisible = !this.isVisible;
+  }
+
+  ngOnInit() {
+    this.isVisible = this.route.snapshot.data['testResolver'];
   }
 
 }
