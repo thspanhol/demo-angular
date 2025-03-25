@@ -10,14 +10,14 @@ import { environment } from '../../environments/environment';
 export class ApiService {
 
   //private apiURL = "https://crud-node-a7h4.onrender.com/usuarios"
-  private apiAuth = environment.apiUrl;
+  // private apiAuth = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
   ///// AUTH
 
   loginAuth(user: UserAuth): Observable<LoginResponse> {
-    return this.http.post<any>(this.apiAuth + 'login', user).pipe(
+    return this.http.post<any>("api/v1/auth/login", user).pipe(
       catchError(this.handleError)
     );
   }
@@ -38,19 +38,19 @@ export class ApiService {
   }
 
   verifyAuth(): Observable<VerifyResponse[]> {
-    return this.http.get<VerifyResponse[]>(this.apiAuth + 'verify');
+    return this.http.get<VerifyResponse[]>("api/v1/auth/verify");
   }
 
   registerAuth(user: UserRegister): Observable<VerifyResponse> {
-    return this.http.post<VerifyResponse>(this.apiAuth + 'register', user);
+    return this.http.post<VerifyResponse>('api/v1/auth/register', user);
   }
 
   deleteAuth(id: string): Observable<void> {
-    return this.http.delete<void>(this.apiAuth + id)
+    return this.http.delete<void>('api/v1/auth/' + id)
   }
 
   updateAuth(id: string, user: UserRegister): Observable<VerifyResponse> {
-    return this.http.put<VerifyResponse>(this.apiAuth + id, user)
+    return this.http.put<VerifyResponse>('api/v1/auth/' + id, user)
   }
 
   // ///////
