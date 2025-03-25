@@ -9,8 +9,8 @@ import { firstResolver } from './first.resolver';
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginPageComponent},
-  {path: 'users', component: UsersPageComponent, canActivate: [AuthorizedGuard]},
-  {path: 'animation', component: AnimationComponent, resolve: {testResolver: firstResolver}},
+  {path: 'users', component: UsersPageComponent, canActivate: [AuthorizedGuard], resolve: {myResolver: firstResolver}},
+  {path: 'animation', component: AnimationComponent, canActivate: [AuthorizedGuard], resolve: {myResolver: firstResolver}},
   { path: '**', redirectTo: 'login', pathMatch: 'full'}
 ];
 

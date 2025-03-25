@@ -17,6 +17,7 @@
   
       <button type="submit" [disabled]="form.invalid">{{ btnCreateUpdate }}</button>
       <button (click)="quitUpdate()" *ngIf="updateUserId">X</button>
+      <button (click)="navigate()">Animation -></button>
 
     </form>
 

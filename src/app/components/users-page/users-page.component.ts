@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { VerifyResponse } from '../../models/user.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BaseFormComponent } from '../base-form/base-form.component';
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { filter, Subject, takeUntil } from 'rxjs';
@@ -21,25 +21,30 @@ export class UsersPageComponent extends BaseFormComponent {
   userListForm: FormGroup;
   isVisibleCrud: boolean = true;
   isVisibleList: boolean = true;
+  resolverUserList: VerifyResponse[];
 
   private unsubscribe$ = new Subject<void>();
   
 
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(private apiService: ApiService, private router: Router, private resolverRoute: ActivatedRoute) {
     super();
     this.createForm();
+
+    this.resolverUserList = resolverRoute.snapshot.data['myResolver'];
 
     this.userListForm = new FormGroup({
       userList: new FormArray([])
     });
   }
 
+  navigate = () => this.router.navigate(["/animation"]);
+
   ngOnInit(): void {
     this.loadUsers();
     this.form.controls['username'].valueChanges.pipe(
       filter(value => value.length > 5)
     ).subscribe(value => {
-      console.log(value); 
+      console.log(value);
     })
   };
 
@@ -90,13 +95,18 @@ export class UsersPageComponent extends BaseFormComponent {
   }
 
   loadUsers() {
-    this.apiService.verifyAuth()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe({
-      next: (data) => data.map(user => !this.userExists(user.userId) && this.addUser(user)),
-      error: (error) => console.log("Error loading users", error),
-      complete: () => console.log('Carregamento de usuários finalizado.')
-  })
+  //   this.apiService.verifyAuth()
+  //   .pipe(takeUntil(this.unsubscribe$))
+  //   .subscribe({
+  //     next: (data) => data.map(user => !this.userExists(user.userId) && this.addUser(user)),
+  //     error: (error) => console.log("Error loading users", error),
+  //     complete: () => console.log('Carregamento de usuários finalizado.')
+  // })
+
+  this.resolverUserList.map((usert: VerifyResponse) => {
+    !this.userExists(usert.userId) && this.addUser(usert)
+  });
+  
   };
 
   updateInputs(user: VerifyResponse) {

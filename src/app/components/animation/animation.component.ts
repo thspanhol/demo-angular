@@ -35,8 +35,8 @@ export class AnimationComponent {
     this.isVisible = !this.isVisible;
   }
 
-  ngOnInit() {
-    this.isVisible = this.route.snapshot.data['testResolver'];
-  }
+  // ngOnInit() {
+  //   this.isVisible = this.route.snapshot.data['myResolver'];
+  // }
 
 }
